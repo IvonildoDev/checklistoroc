@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +6,7 @@ import { TouchableOpacity, Text } from 'react-native';
 import ChecklistScreen from './screens/ChecklistScreen';
 import RelatorioScreen from './screens/RelatorioScreen';
 import LoginScreen from './screens/LoginScreen';
+import SobreScreen from './screens/SobreScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +32,8 @@ export default function App() {
               iconName = 'document-text-outline';
             } else if (route.name === 'Refazer') {
               iconName = 'refresh-circle-outline';
+            } else if (route.name === 'Sobre') {
+              iconName = 'information-circle-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -57,6 +57,16 @@ export default function App() {
               navigation.navigate('Checklist', { reset: true });
             },
           })}
+        />
+        <Tab.Screen
+          name="Sobre"
+          component={SobreScreen}
+          options={{
+            tabBarLabel: 'Sobre',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="information-circle-outline" size={size} color={color} />
+            ),
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>

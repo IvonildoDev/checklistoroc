@@ -67,7 +67,7 @@ const blocks = [
     {
         title: 'Bloco 6',
         questions: [
-            'Habitabilidade em dias',
+            'Habilitação em dia',
             'Manutenção preventiva em dias',
             'O veículo possui vazamentos',
         ],
@@ -100,9 +100,6 @@ export default function RelatorioScreen(props) {
                 resumo += `\n${questionNumber}. ${question}: ${answer}`;
                 questionNumber++;
             });
-            if (answers['obs' + (blockIdx + 1)]) {
-                resumo += `\nObservações: ${answers['obs' + (blockIdx + 1)]}`;
-            }
         });
         const url = `https://wa.me/?text=${encodeURIComponent(resumo)}`;
         Linking.openURL(url);
@@ -131,7 +128,30 @@ export default function RelatorioScreen(props) {
 
     // Gera HTML do relatório para PDF
     function generateHtml() {
-        let html = `<h2 style='text-align:center'>Relatório do Checklist Veículo leve</h2>`;
+        let html = `
+                <div style="border:2px solid #1e40af;border-radius:12px;padding:0 0 8px 0;margin-bottom:18px;background:#f8fafc;box-shadow:0 2px 8px #0001;">
+                    <table style='width:100%;border-collapse:collapse;font-size:13px;'>
+                        <tr>
+                            <td rowspan='3' style='width:110px;padding:10px 16px 10px 10px;'>
+                                <img src='https://raw.githubusercontent.com/IvonildoDev/checklistoroc/main/screens/perbras_logo.png' alt='PERBRAS' style='height:48px;object-fit:contain;display:block;margin:auto;'/>
+                            </td>
+                            <td colspan='2' style='text-align:center;font-weight:700;font-size:15px;color:#1e293b;padding:8px 0 2px 0;letter-spacing:1px;'>SISTEMA DE GESTÃO</td>
+                            <td style='text-align:right;font-size:12px;padding:8px 12px 2px 4px;'><b>Código:</b> <span style='color:#1e40af'>PS-008</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2' style='text-align:center;padding:2px 0;font-size:13px;color:#334155;'>
+                                <span style='font-weight:600;'>ANEXO 02 - CONTROLE E CONDUÇÃO DE VEÍCULOS PRÓPRIOS OU CONTRATADOS</span><br/>
+                                <span style='font-weight:700;font-size:14px;color:#1e40af;'>CHECK LIST VEÍCULO LEVE</span>
+                            </td>
+                            <td style='text-align:right;font-size:12px;padding:2px 12px 2px 4px;'><b>Data:</b> <span style='color:#1e40af'>27/08/2025</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'></td>
+                            <td style='text-align:right;font-size:12px;padding:2px 12px 8px 4px;'><b>Revisão:</b> <span style='color:#1e40af'>00</span><br/><b>Página:</b> <span style='color:#1e40af'>1 de 1</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <h2 style='text-align:center;font-size:20px;color:#1e293b;margin-bottom:10px;margin-top:0;font-weight:800;letter-spacing:1px;'>Relatório do Checklist Veículo leve</h2>`;
         html += `<div style='background:#eaf3fa;padding:10px;border-radius:10px;margin-bottom:12px;'>`;
         html += `<b>Usuário:</b> ${userData?.usuario || '-'}<br/>`;
         html += `<b>Matrícula:</b> ${userData?.matricula || '-'}<br/>`;
@@ -154,17 +174,6 @@ export default function RelatorioScreen(props) {
                 questionNumber++;
             });
             html += `</ul>`;
-            if (answers['obs' + (blockIdx + 1)]) {
-                html += `<div><b>Observações:</b> ${answers['obs' + (blockIdx + 1)]}</div>`;
-            }
-            // Fotos bloco 6
-            if (blockIdx === 5 && Array.isArray(answers.fotos6) && answers.fotos6.length > 0) {
-                html += `<div><b>Fotos do bloco 6:</b><br/>`;
-                answers.fotos6.forEach((src, idx) => {
-                    html += `<img src='${src}' style='max-width:120px;max-height:120px;margin:4px;border-radius:8px;box-shadow:0 1px 4px #0002;' />`;
-                });
-                html += `</div>`;
-            }
         });
         return html;
     }

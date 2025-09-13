@@ -67,7 +67,7 @@ const blocks = [
     {
         title: 'Bloco 6',
         questions: [
-            { label: '30. Habitabilidade em dias', name: 'q30', options: ['Sim', 'Não'] },
+            { label: '30. Habilitação em dia', name: 'q30', options: ['Sim', 'Não'] },
             { label: '31. Manutenção preventiva em dias', name: 'q31', options: ['Sim', 'Não'] },
             { label: '32. O veículo possui vazamentos', name: 'q32', options: ['Sim', 'Não'] },
         ],
