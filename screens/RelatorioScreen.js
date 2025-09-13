@@ -133,7 +133,7 @@ export default function RelatorioScreen(props) {
                     <table style='width:100%;border-collapse:collapse;font-size:13px;'>
                         <tr>
                             <td rowspan='3' style='width:110px;padding:10px 16px 10px 10px;'>
-                                <img src='https://raw.githubusercontent.com/IvonildoDev/checklistoroc/main/screens/perbras_logo.png' alt='PERBRAS' style='height:48px;object-fit:contain;display:block;margin:auto;'/>
+                                <img src='https://raw.githubusercontent.com/IvonildoDev/checklistoroc/main/assets/logoperbras.png' alt='PERBRAS' style='height:48px;object-fit:contain;display:block;margin:auto;'/>
                             </td>
                             <td colspan='2' style='text-align:center;font-weight:700;font-size:15px;color:#1e293b;padding:8px 0 2px 0;letter-spacing:1px;'>SISTEMA DE GESTÃO</td>
                             <td style='text-align:right;font-size:12px;padding:8px 12px 2px 4px;'><b>Código:</b> <span style='color:#1e40af'>PS-008</span></td>
