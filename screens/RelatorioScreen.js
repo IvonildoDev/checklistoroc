@@ -13,64 +13,70 @@ const blocks = [
     {
         title: 'Bloco 1',
         questions: [
-            'Nível de óleo',
-            'Nível fluido de freio',
-            'Nível de água do radiador',
+            { label: '1. Nível de óleo', name: 'q1' },
+            { label: '2. Nível fluido de freio', name: 'q2' },
+            { label: '3. Nível de água do radiador', name: 'q3' },
         ],
+        obs: 'obs1',
     },
     {
         title: 'Bloco 2',
         questions: [
-            'Freio de pé',
-            'Freio de estacionamento',
-            'Motor de partida',
-            'Limpador de para-brisa',
-            'Lavador de para-brisa',
-            'Buzina',
-            'Faróis',
-            'Faróis dianteiros (seta)',
-            'Lanternas traseiras (seta)',
-            'Luz de freio',
-            'Luz de ré',
-            'Luz da placa',
-            'Indicadores de painel',
-            'Cinto de segurança',
-            'Fechamento de janelas',
+            { label: '4. Freio de pé', name: 'q4' },
+            { label: '5. Freio de estacionamento', name: 'q5' },
+            { label: '6. Motor de partida', name: 'q6' },
+            { label: '7. Limpador de para-brisa', name: 'q7' },
+            { label: '8. Lavador de para-brisa', name: 'q8' },
+            { label: '9. Buzina', name: 'q9' },
+            { label: '10. Faróis', name: 'q10' },
+            { label: '11. Faróis dianteiros (seta)', name: 'q11' },
+            { label: '12. Lanternas traseiras (seta)', name: 'q12' },
+            { label: '13. Luz de freio', name: 'q13' },
+            { label: '14. Luz de ré', name: 'q14' },
+            { label: '15. Luz da placa', name: 'q15' },
+            { label: '16. Indicadores de painel', name: 'q16' },
+            { label: '17. Cinto de segurança', name: 'q17' },
+            { label: '18. Fechamento de janelas', name: 'q18' },
         ],
+        obs: 'obs2',
     },
     {
         title: 'Bloco 3',
         questions: [
-            'Condições dos pneus',
-            'Pneu estepe',
+            { label: '19. Condições dos pneus', name: 'q19' },
+            { label: '20. Pneu estepe', name: 'q20' },
         ],
+        obs: 'obs3',
     },
     {
         title: 'Bloco 4',
         questions: [
-            'Triângulo de advertência',
-            'Macaco',
-            'Chave de roda',
+            { label: '21. Triângulo de advertência', name: 'q21' },
+            { label: '22. Macaco', name: 'q22' },
+            { label: '23. Chave de roda', name: 'q23' },
         ],
+        obs: 'obs4',
     },
     {
         title: 'Bloco 5',
         questions: [
-            'Vidros',
-            'Portas',
-            'Para-choque dianteiro',
-            'Para-choque traseiro',
-            'Lataria',
-            'Espelhos retrovisores',
+            { label: '24. Vidros', name: 'q24' },
+            { label: '25. Portas', name: 'q25' },
+            { label: '26. Para-choque dianteiro', name: 'q26' },
+            { label: '27. Para-choque traseiro', name: 'q27' },
+            { label: '28. Lataria', name: 'q28' },
+            { label: '29. Espelhos retrovisores', name: 'q29' },
         ],
+        obs: 'obs5',
     },
     {
         title: 'Bloco 6',
         questions: [
-            'Habilitação em dia',
-            'Manutenção preventiva em dias',
-            'O veículo possui vazamentos',
+            { label: '30. Habilitação em dia', name: 'q30' },
+            { label: '31. Manutenção preventiva em dias', name: 'q31' },
+            { label: '32. O veículo possui vazamentos', name: 'q32' },
         ],
+        obs: 'obs6',
     },
 ];
 
@@ -124,7 +130,7 @@ export default function RelatorioScreen(props) {
         })();
     }, []);
 
-    let questionNumber = 1;
+    //
 
     // Gera HTML do relatório para PDF
     function generateHtml() {
@@ -216,23 +222,21 @@ export default function RelatorioScreen(props) {
                     return (
                         <View key={block.title} style={styles.block}>
                             <Text style={styles.blockTitle}>{block.title}</Text>
-                            {block.questions.map((question, idx) => {
-                                const answer = answers['q' + questionNumber] || 'Não respondido';
+                            {block.questions.map((q, idx) => {
+                                const answer = answers[q.name] || 'Não respondido';
                                 const isAlert = alerta.includes(answer);
                                 const color = answer === 'Não respondido' ? '#dc2626' : isAlert ? '#dc2626' : '#1a2533';
-                                const qNum = questionNumber;
-                                questionNumber++;
                                 return (
-                                    <View key={qNum} style={styles.qaItem}>
-                                        <Text style={[styles.qaQuestion, { color }]}>{qNum}. {question}</Text>
+                                    <View key={q.name} style={styles.qaItem}>
+                                        <Text style={[styles.qaQuestion, { color }]}>{q.label}</Text>
                                         <Text style={styles.qaAnswer}>{answer}</Text>
                                         {idx < block.questions.length - 1 && <View style={styles.separator} />}
                                     </View>
                                 );
                             })}
                             {/* Observação do bloco */}
-                            {answers['obs' + (blockIdx + 1)] ? (
-                                <Text style={styles.obs}><Text style={{ fontWeight: 'bold' }}>Observações:</Text> {answers['obs' + (blockIdx + 1)]}</Text>
+                            {answers[block.obs] ? (
+                                <Text style={styles.obs}><Text style={{ fontWeight: 'bold' }}>Observações:</Text> {answers[block.obs]}</Text>
                             ) : null}
                             {/* Fotos do bloco 6 */}
                             {blockIdx === 5 && Array.isArray(answers.fotos6) && answers.fotos6.length > 0 && (

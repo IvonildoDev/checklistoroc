@@ -5,6 +5,11 @@
     "version": "1.0.0",
     "plugins": [
       "expo-asset"
-    ]
+    ],
+    "splash": {
+      "image": "./assets/splash/splash-perbras.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#1e90ff"
+    }
   }
 }

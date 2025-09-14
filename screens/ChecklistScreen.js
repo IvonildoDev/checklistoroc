@@ -103,7 +103,7 @@ export default function ChecklistScreen(props) {
     const dataStr = today.toLocaleDateString('pt-BR');
 
     const handleOption = (name, value) => {
-        setAnswers({ ...answers, [name]: value });
+        setAnswers(prev => ({ ...prev, [name]: value }));
     };
 
     const handleObs = (name, value) => {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,19 +9,48 @@ import RelatorioScreen from './screens/RelatorioScreen';
 import LoginScreen from './screens/LoginScreen';
 import SobreScreen from './screens/SobreScreen';
 
+SplashScreen.preventAutoHideAsync();
+
 const Tab = createBottomTabNavigator();
 
-
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    async function prepare() {
+      // Simule carregamento de recursos, se necessário
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setAppIsReady(true);
+    }
+    prepare();
+  }, []);
+
+
+  // Esconde a splash quando appIsReady e está na tela de login
+  useEffect(() => {
+    if (appIsReady && !isLogged) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady, isLogged]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
 
   if (!isLogged) {
     return <LoginScreen onLogin={data => { setUserData(data); setIsLogged(true); }} />;
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={onLayoutRootView}>
       <Tab.Navigator
         initialRouteName="Checklist"
         screenOptions={({ route, navigation }) => ({
