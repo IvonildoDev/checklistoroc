@@ -10,6 +10,11 @@
       "image": "./assets/splash/splash-perbras.png",
       "resizeMode": "cover",
       "backgroundColor": "#1e90ff"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c6c4d106-91c6-4b87-b358-6dc8552749ec"
+      }
     }
   }
 }

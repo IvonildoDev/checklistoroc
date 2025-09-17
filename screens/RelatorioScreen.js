@@ -98,14 +98,15 @@ export default function RelatorioScreen(props) {
         if (answers.periodicidade) {
             resumo += `\nPeriodicidade: ${answers.periodicidade}`;
         }
-        let questionNumber = 1;
-        blocks.forEach((block, blockIdx) => {
+        blocks.forEach((block) => {
             resumo += `\n\n${block.title}`;
-            block.questions.forEach((question) => {
-                const answer = answers['q' + questionNumber] || 'Não respondido';
-                resumo += `\n${questionNumber}. ${question}: ${answer}`;
-                questionNumber++;
+            block.questions.forEach((q) => {
+                const answer = answers[q.name] || 'Não respondido';
+                resumo += `\n${q.label}: ${answer}`;
             });
+            if (block.obs && answers[block.obs]) {
+                resumo += `\nObservações: ${answers[block.obs]}`;
+            }
         });
         const url = `https://wa.me/?text=${encodeURIComponent(resumo)}`;
         Linking.openURL(url);
@@ -169,18 +170,41 @@ export default function RelatorioScreen(props) {
         }
         html += `</div>`;
         const alerta = ['Não', 'Não possui', 'Ruim', 'Não funciona', 'Descalibrado', 'Possui avaria'];
-        questionNumber = 1;
-        blocks.forEach((block, blockIdx) => {
+        blocks.forEach((block) => {
             html += `<h3>${block.title}</h3><ul style='padding-left:10px'>`;
-            block.questions.forEach((question) => {
-                const answer = answers['q' + questionNumber] || 'Não respondido';
+            block.questions.forEach((q) => {
+                const answer = answers[q.name] || 'Não respondido';
                 const isAlert = alerta.includes(answer);
                 const color = isAlert ? ' style="color:#dc2626;font-weight:bold"' : '';
-                html += `<li><b>${questionNumber}. ${question}:</b> <span${color}>${answer}</span></li>`;
-                questionNumber++;
+                html += `<li><b>${q.label}:</b> <span${color}>${answer}</span></li>`;
             });
             html += `</ul>`;
+            if (block.obs && answers[block.obs]) {
+                html += `<div style='margin:6px 0 10px 0;font-size:14px;color:#374151;'><b>Observações:</b> ${answers[block.obs]}</div>`;
+            }
         });
+
+        // Adicionar área para assinatura do responsável pela verificação
+        html += `
+            <div style='margin-top:60px;page-break-inside:avoid;'>
+                <div style='display:flex;justify-content:center;'>
+                    <div style='width:60%;text-align:center;'>
+                        <div style='height:80px;'></div>
+                        <div style='border-top:1.5px solid #2a7ae4;padding-top:8px;font-size:15px;font-weight:600;color:#1a2533;'>
+                             Responsável pela Verificação
+                        </div>
+                    </div>
+                </div>
+                
+                <div style='margin-top:60px;font-size:13px;color:#555;border-top:1px solid #e5e7eb;padding-top:15px;'>
+                    <div style='display:flex;justify-content:space-between;margin-bottom:15px;'>
+                        <div style='text-align:left;'><b>Elaborado por:</b> Gabriel Olimpio <b>Data:</b> 27/08/2025</div>
+                        <div style='text-align:right;'><b>Aprovado por:</b> Adelmo Santos <b>Data:</b> 27/08/2025</div>
+                    </div>
+                </div>
+            </div>
+        `;
+
         return html;
     }
 
@@ -195,7 +219,7 @@ export default function RelatorioScreen(props) {
                 Alert.alert('Erro', 'Compartilhamento não disponível neste dispositivo.');
             }
         } catch (e) {
-            Alert.alert('Erro', 'Não foi possível gerar ou compartilhar o PDF.');
+            Alert.alert('Erro', `Não foi possível gerar ou compartilhar o PDF.\n\n${e?.message || e}`);
         }
         setGenerating(false);
     }
